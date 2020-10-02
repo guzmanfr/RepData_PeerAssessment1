@@ -88,19 +88,19 @@ for (i in 1:length(imputedData$steps)) {
 }
 
 totalStepsImputed <- aggregate(steps ~ date, imputedData, sum)
-names(totalStepsImputed) <- c("date", "daily_steps")
+names(totalStepsImputed) <- c("date", "dailySteps")
 ```
 
 # 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ```{r newHistogram}
-hist(totalStepsImputed$daily_steps, col = "blue", labels = TRUE, xlab = "Total steps per day", ylim = c(0, 20), main = "Total number of steps taken each day", breaks = 15)
+hist(totalStepsImputed$dailySteps, col = "blue", labels = TRUE, xlab = "Total steps per day", ylim = c(0, 25), main = "Total number of steps taken each day", breaks = 15)
 
 # 4.1 Calculate and report the mean
-mean(totalStepsImputed$daily_steps)
+mean(totalStepsImputed$dailySteps)
 
 # 4.2 Calculate and report the median
-median(totalStepsImputed$daily_steps)
+median(totalStepsImputed$dailySteps)
 
 # A: mean and median values converge to the mean value in the 1st part of the assignment
 ```
