@@ -108,9 +108,9 @@ median(totalStepsImputed$daily_steps)
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r dateTypes}
 # 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day
-activity$date <- as.Date(strptime(activity$date, format="%Y-%m-%d"))
+activity$date <- as.Date(strptime(activity$date, format = "%Y-%m-%d"))
 activity$datetype <- sapply(activity$date, function(x) {
-        if (weekdays(x) == "Saturday" | weekdays(x) =="Sunday") 
+        if (weekdays(x) == "Saturday" | weekdays(x) == "Sunday") 
                 {y <- "Weekend"}
         else 
                 {y <- "Weekday"}
