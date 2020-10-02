@@ -31,7 +31,7 @@ if (!file.exists(dataFile) & file.exists(zipDataFile)) {
 activity <- read.csv("activity.csv", na.strings = "NA")
 
 # 2. Process/transform the data (if necessary) into a format suitable for your analysis
-# activity <- transform(activity, date = as.Date(date))
+activity <- transform(activity, date = as.Date(date))
 ```
 
 ## What is mean total number of steps taken per day?
@@ -73,21 +73,26 @@ maxInterval
 # 1. Calculate and report the total number of missing values in the dataset 
 #    (i.e. the total number of rows with NA's)
 sum(is.na(activity))
+```
 
 # 2. Devise a strategy for filling in all of the missing values in the dataset.
 #    Strategy: replace NA's by the mean of that 5 min interval
 
-#3. Create a new dataset that is equal to the original dataset but with the 
+# 3. Create a new dataset that is equal to the original dataset but with the 
 #   missing data filled in.
+
+```{r imputedData}
 imputedData <- transform(activity, steps = ifelse(is.na(activity$steps), yes = imputed_steps, no = activity$steps))
 totalStepsImputed <- aggregate(steps ~ date, imputedData, sum)
 names(totalStepsImputed) <- c("date", "daily_steps")
+```
 
 # 4. Make a histogram of the total number of steps taken each day and Calculate and report
 #    the mean and median total number of steps taken per day. Do these values differ from
 #    the estimates from the first part of the assignment? What is the impact of imputing
 #    missing data on the estimates of the total daily number of steps?
 
+```{r newHistogram}
 hist(totalStepsImputed$daily_steps, col = "blue", labels = TRUE, xlab = "Total steps per day", ylim = c(0, 20), main = "Total number of steps taken each day", breaks = 15)
 
 # 4.1 Calculate and report the mean
@@ -95,6 +100,24 @@ mean(totalStepsImputed$daily_steps)
 
 # 4.2 Calculate and report the median
 median (totalStepsImputed$daily_steps)
+
+# A: mean and median values converge to the mean value in the 1st part of the assignment
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r dateTypes}
+# 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend”
+#    indicating whether a given date is a weekday or weekend day
+activityByDate <- aggregate(steps~interval + datetype, activity, mean, na.rm = TRUE)
+
+# 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute
+#    interval (x-axis) and the average number of steps taken, averaged across all weekday
+#    days or weekend days (y-axis)
+
+plot <- ggplot(activityByDate, aes(x = interval , y = steps, color = datetype)) +
+       geom_line() +
+       labs(title = "Average daily steps by type of date", x = "Interval", 
+            y = "Average number of steps") +
+       facet_wrap(~datetype, ncol = 1, nrow = 2)
+print(plot)
+```
